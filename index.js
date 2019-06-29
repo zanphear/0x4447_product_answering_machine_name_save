@@ -1,54 +1,58 @@
 let AWS = require('aws-sdk');
 
 //
-//	Create the DynamoDB object
+//  Create the DynamoDB object
 //
-let dynamodb = new AWS.DynamoDB({
-	apiVersion: '2012-08-10',
-	region: 'us-east-1'
+let ddb = new AWS.DynamoDB.DocumentClient({
+    apiVersion: '2012-08-10',
+    region: process.env.AWS_REGION
 });
 
-exports.handler = (event, context, callback) => {
+//
+//  This lambda saves the name that the user over the phone said.
+//
+exports.handler = (event) => {
 
-    console.log(JSON.stringify(event, null, 4))
-
-    let name = event.Details.ContactData.Attributes.first_name
-    let phone_nr = event.Details.ContactData.CustomerEndpoint.Address
-
-    //
-	//	1.	Prepare the query
-	//
-	let params = {
-		Item: {
-			phone_nr: {
-				S: phone_nr
-			},
-			name: {
-				S: name
-			}
-		},
-		TableName: "0x4447_connect_sessions"
-	};
-
-	//
-	//	2.	Execute the query
-	//
-	dynamodb.putItem(params, function(error, data) {
-
-		//
-		//	1.	Check if there were any errors
-		//
-		if(error)
-		{
-			console.log(error);
-		}
+    return new Promise(function(resolve, reject) {
 
         //
-        //  ->  Tell Lmabda that we are done working
+        //  1.  Simplify the variable that we need.
         //
-        callback(null, {});
+        let name = event.Details.ContactData.Attributes.first_name
+        let phone_nr = event.Details.ContactData.CustomerEndpoint.Address
 
-	});
+        //
+        //  2.  Prepare the query
+        //
+        let params = {
+            TableName: "answering_machine",
+            Item: {
+                id: phone_nr,
+                type: 'basic',
+                name: name
+            },
+        };
 
+        //
+        //  3.  Execute the query
+        //
+        ddb.put(params, function(error, data) {
 
+            //
+            //  1.  Check if there were any errors
+            //
+            if(error)
+            {
+                console.info(params);
+                return reject(error);
+            }
+
+            //
+            //  ->  Tell Lambda that we are done working.
+            //
+            return resolve({});
+
+        });
+
+    });
 };
