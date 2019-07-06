@@ -29,7 +29,8 @@ exports.handler = (event) => {
             Item: {
                 id: phone_nr,
                 type: 'basic',
-                name: name
+                name: name,
+                timestamp_created: Math.floor(Date.now() / 1000)
             },
         };
 
