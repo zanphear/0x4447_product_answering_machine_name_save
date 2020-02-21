@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/0x4447/0x4447-Project-Email-Lambda-Inbound.git"
+    "url": "git+https://github.com/zanphear/0x4447-Project-Email-Lambda-Inbound.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/0x4447/0x4447-Project-Email-Lambda-Inbound/issues"
+    "url": "https://github.com/zanphear/0x4447-Project-Email-Lambda-Inbound/issues"
   },
-  "homepage": "https://github.com/0x4447/0x4447-Project-Email-Lambda-Inbound#readme",
+  "homepage": "https://github.com/zanphear/0x4447-Project-Email-Lambda-Inbound#readme",
   "dependencies": {
     "aws-sdk": "^2.388.0",
     "mailparser": "^2.4.3",
